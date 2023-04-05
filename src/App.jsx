@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import championsJson from './champions.json'
 import Champions from './components/champions'
 import Filters from './components/filters'
+import Search from './components/search'
 
 function App() {
     const [champions] = useState(Object.values(championsJson.champions))
@@ -41,6 +42,7 @@ function App() {
 
     return (
         <>
+            <Search champions={champions} filteredChampions={filteredChampions} setFilteredChampions={setFilteredChampions} />
             <div className="flex flex-wrap lg:flex-nowrap px-2 lg:px-20 mt-4 mx-0 md:mx-m6">
                 <div className="w-full md:w-3/12 lg:w-4/12 px-6">
                     <Filters filters={filters} champions={champions} setFilteredChampions={setFilteredChampions} />
