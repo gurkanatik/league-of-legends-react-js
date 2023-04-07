@@ -6,13 +6,26 @@ import Search from './components/search'
 
 function App() {
     const [champions] = useState(Object.values(championsJson.champions))
-    const [filteredChampions, setFilteredChampions] = useState([])
     const [tags, setTags] = useState([])
     const [resources, setResources] = useState([])
     const [filters, setFilters] = useState([])
+    const [selectedFilters, setSelectedFilters] = useState({})
+    const [searchValue, setSearchValue] = useState('')
+
+    const filteredChampions = champions.filter((champion) => {
+        return Object.entries(selectedFilters).every(([filterKey, filterValues]) => {
+            return filterValues.every((filterValue) => {
+                return champion[filterKey].includes(filterValue)
+            })
+        })
+    }).filter((champion) => {
+        if (searchValue.length > 0) {
+            return champion.name.toLowerCase().includes(searchValue.toLowerCase())
+        }
+        return champion
+    })
 
     useEffect(() => {
-        setFilteredChampions(champions.splice(0, 12))
         setTags(getTags)
         setResources(getResources)
     }, [champions])
@@ -42,10 +55,10 @@ function App() {
 
     return (
         <>
-            <Search champions={champions} filteredChampions={filteredChampions} setFilteredChampions={setFilteredChampions} />
+            <Search setSearchValue={setSearchValue} />
             <div className="flex flex-wrap lg:flex-nowrap px-2 lg:px-20 mt-4 mx-0 md:mx-m6">
                 <div className="w-full md:w-3/12 lg:w-4/12 px-6">
-                    <Filters filters={filters} champions={champions} setFilteredChampions={setFilteredChampions} />
+                    <Filters filters={filters} champions={champions} selectedFilters={selectedFilters} setSelectedFilters={setSelectedFilters} />
                 </div>
                 <div className="w-full md:w-9/12 lg:w-8/12 px-6">
                     <Champions champions={filteredChampions}/>

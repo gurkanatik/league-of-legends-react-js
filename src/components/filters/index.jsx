@@ -1,25 +1,5 @@
-import {useEffect, useState} from "react";
 import Filter from "./filter";
-
-export default function ({filters, champions, setFilteredChampions}) {
-    const [selectedFilters, setSelectedFilters] = useState({})
-
-    useEffect(() => {
-        filterChampions()
-    }, [selectedFilters])
-
-    function filterChampions() {
-        champions = champions.filter((champion) => {
-            return Object.entries(selectedFilters).every(([filterKey, filterValues]) => {
-                return filterValues.every((filterValue) => {
-                    return champion[filterKey].includes(filterValue)
-                })
-            })
-        });
-
-        setFilteredChampions(champions)
-    }
-
+export default function ({filters, selectedFilters, setSelectedFilters}) {
     return (
         <>
             <span className="text-2xl font-bold mb-2 block">Filters</span>
